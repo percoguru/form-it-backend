@@ -1,4 +1,4 @@
-package models
+package model
 
 import (
 	"github.com/google/uuid"
@@ -12,6 +12,8 @@ type User struct {
 	FirstName string
 	LastName  string
 	Email     string
+	Username  string
+	Password  string
 }
 
 type Form struct {

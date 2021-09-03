@@ -4,8 +4,10 @@ import (
 	"log"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/google/uuid"
-	"gorm.io/driver/postgres"
+	"github.com/percoguru/form-it-backend/database"
+	"github.com/percoguru/form-it-backend/router"
 	"gorm.io/gorm"
 )
 
@@ -19,27 +21,10 @@ type User struct {
 
 func main() {
 	app := fiber.New()
+	app.Use(cors.New())
 
-	dsn := "host=localhost user=postgres password=postgres123 dbname=form-it port=5432 sslmode=disable"
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	database.ConnectDB()
 
-	if err != nil {
-		log.Println(err)
-	}
-
-	db.AutoMigrate(&User{})
-
-	db.Create(&User{ID: uuid.New(), FirstName: "Gaurav", LastName: "Mehra", Email: "gurugmbs8@gmail.com"})
-
-	var user User
-
-	db.First(&user, "first_name = ?", "Gaurav")
-
-	log.Println(user)
-
-	app.Get("/", func(c *fiber.Ctx) error {
-		return c.SendString("Hello, World")
-	})
-	// app.Get("/user", user.GetUsers)
-	app.Listen(":3000")
+	router.SetupRoutes(app)
+	log.Fatal(app.Listen(":3000"))
 }
