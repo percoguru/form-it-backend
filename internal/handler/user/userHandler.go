@@ -5,6 +5,7 @@ import (
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gofiber/fiber/v2"
+	"github.com/google/uuid"
 	"github.com/percoguru/form-it-backend/database"
 	"github.com/percoguru/form-it-backend/internal/model"
 	"golang.org/x/crypto/bcrypt"
@@ -29,14 +30,13 @@ func validToken(t *jwt.Token, id string) bool {
 
 // GetUser get a user
 func GetUser(c *fiber.Ctx) error {
-	id := c.Params("id")
 	db := database.DB
-	var user model.User
-	db.Find(&user, id)
-	if user.Username == "" {
-		return c.Status(404).JSON(fiber.Map{"status": "error", "message": "No user found with ID", "data": nil})
+	var users []model.User
+	db.Find(&users)
+	if len(users) == 0 {
+		return c.Status(404).JSON(fiber.Map{"status": "error", "message": "No users found", "data": nil})
 	}
-	return c.JSON(fiber.Map{"status": "success", "message": "Product found", "data": user})
+	return c.JSON(fiber.Map{"status": "success", "message": "Users found", "data": users})
 }
 
 // CreateUser new user
@@ -57,7 +57,7 @@ func CreateUser(c *fiber.Ctx) error {
 		return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Couldn't hash password", "data": err})
 
 	}
-
+	user.ID = uuid.New()
 	user.Password = hash
 	if err := db.Create(&user).Error; err != nil {
 		return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Couldn't create user", "data": err})

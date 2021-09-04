@@ -2,18 +2,17 @@ package model
 
 import (
 	"github.com/google/uuid"
-	"github.com/percoguru/form-it-backend/internal/types"
 	"gorm.io/gorm"
 )
 
 type User struct {
 	gorm.Model
 	ID        uuid.UUID
-	FirstName string
-	LastName  string
-	Email     string
-	Username  string
-	Password  string
+	FirstName string `json:"first_name"`
+	LastName  string `json:"last_name"`
+	Email     string `json:"email"`
+	Username  string `json:"username"`
+	Password  string `json:"password"`
 }
 
 type Form struct {
@@ -31,5 +30,20 @@ type FormPage struct {
 	gorm.Model
 	ID       uuid.UUID
 	FormId   uuid.UUID
-	FormData []types.FormEntity
+	FormData string
+}
+
+type Response struct {
+	gorm.Model
+	ID         uuid.UUID
+	ResponseId uuid.UUID
+	Status     string
+}
+
+type RepsonsePageData struct {
+	gorm.Model
+	ResponseId       uuid.UUID
+	FormPageId       uuid.UUID
+	ResponsePageData string
+	Status           string
 }
