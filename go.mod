@@ -3,6 +3,7 @@ module github.com/percoguru/form-it-backend
 go 1.13
 
 require (
+	github.com/cespare/reflex v0.3.1 // indirect
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/gofiber/fiber v1.14.6
 	github.com/gofiber/fiber/v2 v2.18.0
