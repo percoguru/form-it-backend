@@ -8,4 +8,5 @@ import (
 func SetupFormRoutes(router fiber.Router) {
 	form := router.Group("/form")
 	form.Get("/", formHandler.GetForms)
+	form.Post("/", formHandler.CreateForm)
 }
