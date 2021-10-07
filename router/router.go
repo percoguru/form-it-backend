@@ -14,6 +14,9 @@ func SetupRoutes(app *fiber.App) {
 	// Middleware
 	api := app.Group("/api", logger.New())
 
-	userRoutes.SetupUserRoutes(api)
-	formRoutes.SetupFormRoutes(api)
+	form := api.Group("/form")
+	user := api.Group("/user")
+
+	userRoutes.SetupUserRoutes(user)
+	formRoutes.SetupFormRoutes(form)
 }
