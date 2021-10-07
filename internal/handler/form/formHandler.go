@@ -26,9 +26,20 @@ func CreateForm(c *fiber.Ctx) error {
 func GetForms(c *fiber.Ctx) error {
 	db := database.DB
 	var forms []model.Form
-	db.Find(&forms)
+	db.Preload("FormPages").Find(&forms)
 	if len(forms) == 0 {
 		return c.Status(404).JSON(fiber.Map{"status": "error", "message": "No forms found", "data": nil})
 	}
-	return c.JSON(fiber.Map{"status": "success", "message": "Users found", "data": forms})
+	return c.JSON(fiber.Map{"status": "success", "message": "Forms found", "data": forms})
+}
+
+func GetForm(c *fiber.Ctx) error {
+	db := database.DB
+	var form model.Form
+
+	formId := c.Params("formId")
+
+	db.First(&form, formId)
+
+	return c.JSON(fiber.Map{"status": "success", "message": "Form found", "data": form})
 }
