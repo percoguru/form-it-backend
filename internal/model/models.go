@@ -11,16 +11,16 @@ import (
 )
 
 type Base struct {
-	ID        uuid.UUID `gorm:"type:uuid;primary_key;"`
-	CreatedAt time.Time
-	UpdatedAt time.Time
-	DeletedAt time.Time `gorm:"index"`
+	ID        uuid.UUID `gorm:"type:uuid;primary_key;" json:"id"`
+	CreatedAt time.Time `json:"createdAt"`
+	UpdatedAt time.Time `json:"updatedAt"`
+	DeletedAt time.Time `gorm:"index" json:"deletedAt"`
 }
 
 type User struct {
 	Base
-	FirstName string `json:"first_name"`
-	LastName  string `json:"last_name"`
+	FirstName string `json:"firstName"`
+	LastName  string `json:"lastName"`
 	Email     string `json:"email"`
 	Username  string `json:"username"`
 	Password  string `json:"password"`
@@ -28,32 +28,31 @@ type User struct {
 
 type Form struct {
 	Base
-	Owner         uuid.UUID  `gorm:"type:uuid;" json:"owner"`
-	Organization  string     `json:"organization"`
-	Name          string     `json:"name"`
-	Description   string     `json:"description"`
-	Subtitle      string     `json:"subtitle"`
-	NumberOfPages int        `json:"number_of_pages"`
-	FormPages     []FormPage `json:"form_pages"`
+	Owner        uuid.UUID  `gorm:"type:uuid;" json:"owner"`
+	Organization string     `json:"organization"`
+	Name         string     `json:"name"`
+	Description  string     `json:"description"`
+	Subtitle     string     `json:"subtitle"`
+	FormPages    []FormPage `json:"formPages"`
 }
 
 type FormPage struct {
 	Base
-	FormId   uuid.UUID      `gorm:"type:uuid;"`
-	FormData datatypes.JSON `gorm:"type:json" json:"form_data"`
+	FormId   uuid.UUID      `gorm:"type:uuid;" json:"formId"`
+	FormData datatypes.JSON `gorm:"type:json" json:"formData"`
 }
 
 type Response struct {
 	Base
 	ResponseId uuid.UUID `gorm:"type:uuid;"`
-	Status     string
+	Status     string    `json:"status"`
 }
 
 type ResponsePageData struct {
-	ResponseId       uuid.UUID `gorm:"type:uuid;primary_key;"`
-	FormPageId       uuid.UUID `gorm:"type:uuid;primary_key"`
-	ResponsePageData datatypes.JSON
-	Status           string
+	ResponseId       uuid.UUID      `gorm:"type:uuid;primary_key;" json:"responseId"`
+	FormPageId       uuid.UUID      `gorm:"type:uuid;primary_key" json:"formPageId"`
+	ResponsePageData datatypes.JSON `json:"responePageData"`
+	Status           string         `json:"status"`
 }
 
 func (base *Base) BeforeCreate(tx *gorm.DB) (err error) {
