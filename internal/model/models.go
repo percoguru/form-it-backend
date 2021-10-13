@@ -28,13 +28,12 @@ type User struct {
 
 type Form struct {
 	Base
-	Owner         uuid.UUID  `gorm:"type:uuid;" json:"owner"`
-	Organization  string     `json:"organization"`
-	Name          string     `json:"name"`
-	Description   string     `json:"description"`
-	Subtitle      string     `json:"subtitle"`
-	NumberOfPages int        `json:"numberOfPages"`
-	FormPages     []FormPage `json:"formPages"`
+	Owner        uuid.UUID  `gorm:"type:uuid;" json:"owner"`
+	Organization string     `json:"organization"`
+	Name         string     `json:"name"`
+	Description  string     `json:"description"`
+	Subtitle     string     `json:"subtitle"`
+	FormPages    []FormPage `json:"formPages"`
 }
 
 type FormPage struct {
